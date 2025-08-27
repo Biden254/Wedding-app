@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import api from "../src/api";
+import api from "../api";
 import GiftFormModal from "./GiftFormModal";
 
 export default function GiftCarousel() {
