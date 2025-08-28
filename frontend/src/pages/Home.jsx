@@ -11,7 +11,7 @@ export default function Home() {
     return () => clearInterval(t);
   }, [eventDate]);
 
-  const venueAddress = encodeURIComponent("The Grand Ballroom, 123 Oak Street, Anytown, USA");
+  const venueAddress = encodeURIComponent("Karangata SDA, Langata Road, Nairobi, Kenya");
   const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${venueAddress}`;
 
   return (
@@ -19,7 +19,7 @@ export default function Home() {
       {/* Hero */}
       <section className="hero rounded-xl p-6 bg-weddingLightBeige">
         <img
-          src="/banner.jpg"
+          src="./src/pages/banner.jpg"
           alt="Wedding banner"
           className="hero-image rounded-md w-full h-56 object-cover"
         />
@@ -36,6 +36,19 @@ export default function Home() {
           <CountCard label="Hours" value={timeLeft.hours} />
           <CountCard label="Minutes" value={timeLeft.minutes} />
           <CountCard label="Seconds" value={timeLeft.seconds} />
+        </div>
+      </section>
+
+      {/* RSVP */}
+      <section id="rsvp" className="section rounded-xl p-6 bg-white shadow-sm">
+        <h2 className="text-xl font-semibold text-weddingBrown">RSVP</h2>
+        <p className="text-sm text-gray-600 mt-2">
+          Please let us know your plans by June 1st, 2025.
+        </p>
+        <div className="mt-4">
+          <a className="btn primary px-4 py-2 rounded-md" href="#registry">
+            RSVP &amp; View Registry
+          </a>
         </div>
       </section>
 
@@ -62,19 +75,6 @@ export default function Home() {
             href="#registry"
           >
             Registry
-          </a>
-        </div>
-      </section>
-
-      {/* RSVP */}
-      <section id="rsvp" className="section rounded-xl p-6 bg-white shadow-sm">
-        <h2 className="text-xl font-semibold text-weddingBrown">RSVP</h2>
-        <p className="text-sm text-gray-600 mt-2">
-          Please let us know your plans by June 1st, 2025.
-        </p>
-        <div className="mt-4">
-          <a className="btn primary px-4 py-2 rounded-md" href="#registry">
-            RSVP &amp; View Registry
           </a>
         </div>
       </section>

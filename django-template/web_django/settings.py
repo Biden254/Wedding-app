@@ -56,6 +56,7 @@ SIMPLE_JWT = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://wedding-app-seven-rho.vercel.app"
 ]
 
 ROOT_URLCONF = "web_django.urls"
