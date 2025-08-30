@@ -1,37 +1,92 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import GiftCarousel from "../components/GiftCarousel";
 
+// Get backend API URL from .env
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Home() {
-  // Event date (adjust as needed)
-  const eventDate = useMemo(() => new Date("2025-08-27T16:00:00"), []);
+  const eventDate = useMemo(() => new Date("2025-10-26T08:00:00"), []);
   const [timeLeft, setTimeLeft] = useState(getRemaining(eventDate));
+
+  // RSVP form state
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     const t = setInterval(() => setTimeLeft(getRemaining(eventDate)), 1000);
     return () => clearInterval(t);
   }, [eventDate]);
 
-  const venueAddress = encodeURIComponent("Karangata SDA, Langata Road, Nairobi, Kenya");
+  // Google Maps link
+  const venueAddress = encodeURIComponent(
+    "Karangata SDA, Langata Road, Nairobi, Kenya"
+  );
   const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${venueAddress}`;
 
+  // Handle RSVP submit
+  const handleRSVP = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setMessage(null);
+
+    try {
+      const response = await fetch(`${API_URL}/api/rsvp/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage({
+          type: "success",
+          text: ` Hapo sawa ${name}! Umebook seat yako. Usichelewe siku ya harusi, hatukuholdii seat bana 😎`,
+        });
+        setName("");
+        setEmail("");
+      } else {
+        setMessage({
+          type: "error",
+          text: `😏 Aiii ${name || "bro"}! Server imekata story: ${
+            data.detail || "Jaribu tena tafadhali"
+          }`,
+        });
+      }
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text: `🙄 Wueh! Hii net inacheza na feelings zetu bana. Refresh ndio tufanye mambo freshi.`,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {/* Hero */}
-      <section className="hero rounded-xl p-6 bg-weddingLightBeige">
+      <section className="hero rounded-2xl p-6 bg-weddingLightBeige shadow-md">
         <img
           src="./src/pages/banner.jpg"
           alt="Wedding banner"
-          className="hero-image rounded-md w-full h-56 object-cover"
+          className="hero-image rounded-lg w-full h-56 object-cover shadow"
         />
         <h1 className="hero-title mt-4 text-3xl font-bold text-weddingBrown">
           Join us as we say "I do"
         </h1>
         <p className="text-gray-700 mt-2">
-          We're excited to celebrate with family and friends — come share the day.
+          We're excited to celebrate with family and friends — come share the
+          day.
         </p>
 
         {/* Countdown */}
-        <div className="count-cards flex gap-4 mt-4 flex-wrap">
+        <div className="count-cards flex gap-4 mt-6 flex-wrap justify-center">
           <CountCard label="Days" value={timeLeft.days} />
           <CountCard label="Hours" value={timeLeft.hours} />
           <CountCard label="Minutes" value={timeLeft.minutes} />
@@ -40,30 +95,104 @@ export default function Home() {
       </section>
 
       {/* RSVP */}
-      <section id="rsvp" className="section rounded-xl p-6 bg-white shadow-sm">
-        <h2 className="text-xl font-semibold text-weddingBrown">RSVP</h2>
-        <p className="text-sm text-gray-600 mt-2">
-          Please let us know your plans by June 1st, 2025.
+      <section
+        id="rsvp"
+        className="section rounded-2xl p-8 bg-white shadow-lg border border-gray-100"
+      >
+        <h2 className="text-2xl font-semibold text-weddingBrown text-center">
+          RSVP
+        </h2>
+        <p className="text-sm text-gray-600 mt-2 text-center">
+          Please let us know your plans by September 15th, 2025.
         </p>
-        <div className="mt-4">
-          <a className="btn primary px-4 py-2 rounded-md" href="#registry">
-            RSVP &amp; View Registry
-          </a>
-        </div>
+
+        <form
+          onSubmit={handleRSVP}
+          className="mt-8 max-w-lg mx-auto space-y-6 bg-gray-50 p-8 rounded-xl shadow-inner"
+        >
+          {/* Name input */}
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
+              Jina Yako
+            </label>
+            <input
+              type="text"
+              id="name"
+              placeholder="Andika jina hapa bro/sis 😎"
+              className="w-full rounded-xl border border-gray-200 p-3 text-gray-700 placeholder-gray-400 shadow-sm focus:border-weddingBlue focus:ring-2 focus:ring-weddingBlue transition sm:text-sm"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Email input */}
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
+              Email Yako
+            </label>
+            <input
+              type="email"
+              id="email"
+              placeholder="Usisahau email, ndio tukutumie details bana 📧"
+              className="w-full rounded-xl border border-gray-200 p-3 text-gray-700 placeholder-gray-400 shadow-sm focus:border-weddingBlue focus:ring-2 focus:ring-weddingBlue transition sm:text-sm"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Submit button */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            type="submit"
+            disabled={isSubmitting}
+            className={`w-full px-5 py-3 rounded-xl font-semibold text-white shadow transition-all ${
+              isSubmitting
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-weddingBlue hover:bg-weddingDarkBlue"
+            }`}
+          >
+            {isSubmitting ? "⏳ Medi kiasi..." : "🚀 Register sasa!"}
+          </motion.button>
+        </form>
+
+        {/* Funny message feedback */}
+        {message && (
+          <div
+            className={`mt-6 max-w-lg mx-auto p-4 rounded-lg text-sm font-medium shadow-md transition ${
+              message.type === "success"
+                ? "bg-green-100 text-green-800 border border-green-200"
+                : "bg-red-100 text-red-800 border border-red-200"
+            }`}
+          >
+            {message.text}
+          </div>
+        )}
       </section>
 
       {/* Ceremony / Details */}
-      <section id="details" className="section rounded-xl p-6 bg-white shadow-sm">
-        <h2 className="text-xl font-semibold text-weddingBrown">Ceremony</h2>
+      <section
+        id="details"
+        className="section rounded-2xl p-6 bg-white shadow-lg border border-gray-100"
+      >
+        <h2 className="text-2xl font-semibold text-weddingBrown">Ceremony</h2>
         <p className="text-sm text-gray-600 mt-2">
           Saturday, August 27th, 2025 — 4:00 PM
         </p>
         <p className="text-sm text-gray-600">
-          The Grand Ballroom, 123 Oak Street, Anytown, USA
+          Karengata SDA, Langata Road, Nairobi, Kenya
         </p>
-        <div className="mt-4 flex gap-3">
+        <div className="mt-4 flex gap-3 flex-wrap">
           <a
-            className="btn map-btn px-4 py-2 rounded-md border border-gray-200 hover:bg-gray-50"
+            className="btn map-btn px-5 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 shadow"
             href={googleMapsUrl}
             target="_blank"
             rel="noreferrer"
@@ -71,7 +200,7 @@ export default function Home() {
             View Map
           </a>
           <a
-            className="btn px-4 py-2 rounded-md bg-weddingBlue text-white"
+            className="btn px-5 py-2 rounded-xl bg-weddingBlue text-white hover:bg-weddingDarkBlue shadow"
             href="#registry"
           >
             Registry
@@ -79,9 +208,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Registry */}
-      <section id="registry" className="registry rounded-xl p-6 bg-white shadow-sm">
-        <h2 className="text-xl font-semibold text-weddingBrown">Registry</h2>
+      {/* Gifts */}
+      <section
+        id="gifts"
+        className="gifts rounded-2xl p-6 bg-white shadow-lg border border-gray-100"
+      >
+        <h2 className="text-2xl font-semibold text-weddingBrown">Gifts</h2>
         <p className="text-sm text-gray-600 mt-2">
           Browse gifts below. Swipe left/right or use arrows to navigate. Reserve
           a gift to start the reservation flow.
@@ -92,25 +224,39 @@ export default function Home() {
       </section>
 
       {/* Photos placeholder */}
-      <section id="photos" className="section rounded-xl p-6 bg-white shadow-sm">
-        <h2 className="text-xl font-semibold text-weddingBrown">Photos</h2>
+      <section
+        id="photos"
+        className="section rounded-2xl p-6 bg-white shadow-lg border border-gray-100"
+      >
+        <h2 className="text-2xl font-semibold text-weddingBrown">Photos</h2>
         <p className="text-sm text-gray-600 mt-2">Gallery coming soon.</p>
       </section>
     </div>
   );
 }
 
-/* Small helper components / functions */
-
+/* Countdown card with flip animation */
 function CountCard({ label, value }) {
   return (
-    <div className="count-card bg-[{#eef6ff}] rounded-md px-4 py-3 text-center min-w-[80px]">
-      <div className="text-2xl font-semibold text-weddingBrown">{value}</div>
-      <div className="text-xs text-gray-500 mt-1">{label}</div>
+    <div className="count-card bg-[#eef6ff] rounded-xl px-5 py-4 text-center min-w-[90px] shadow-lg border border-gray-200">
+      <AnimatePresence mode="popLayout">
+        <motion.div
+          key={value}
+          initial={{ rotateX: 90, opacity: 0 }}
+          animate={{ rotateX: 0, opacity: 1 }}
+          exit={{ rotateX: -90, opacity: 0 }}
+          transition={{ duration: 0.4 }}
+          className="text-3xl font-semibold text-weddingBrown"
+        >
+          {value}
+        </motion.div>
+      </AnimatePresence>
+      <div className="text-sm text-gray-600 mt-1">{label}</div>
     </div>
   );
 }
 
+/* Countdown calculation */
 function getRemaining(target) {
   const now = new Date().getTime();
   const diff = Math.max(0, target.getTime() - now);

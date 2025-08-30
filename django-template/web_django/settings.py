@@ -14,6 +14,10 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-dev-key-change-me")
 DEBUG = os.environ.get("DJANGO_DEBUG", "False").lower() in ("1", "true", "yes")
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET")
+GOOGLE_REDIRECT_URI = os.environ.get("GOOGLE_REDIRECT_URI")
+
 # Application definition
 
 INSTALLED_APPS = [
