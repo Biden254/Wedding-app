@@ -40,7 +40,7 @@ export default function Home() {
     setMessage(null);
 
     try {
-      const response = await fetch(`${API_URL}/api/rsvp/`, {
+      const response = await fetch(`${API_URL}/api/guests/rsvp/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
