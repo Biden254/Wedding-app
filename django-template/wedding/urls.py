@@ -1,6 +1,14 @@
-from rest_framework.routers import DefaultRouter
 from django.urls import path, include
-from .views import GuestViewSet, GiftViewSet, WishViewSet, GalleryViewSet
+from rest_framework.routers import DefaultRouter
+from .views import (
+    GuestViewSet,
+    GiftViewSet,
+    WishViewSet,
+    GalleryViewSet,
+    GoogleAuthInitView,
+    GoogleAuthCallbackView,
+    GoogleDriveUploadView,
+)
 
 router = DefaultRouter()
 router.register(r'guests', GuestViewSet, basename='guest')
@@ -10,4 +18,7 @@ router.register(r'gallery', GalleryViewSet, basename='gallery')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('auth/init/', GoogleAuthInitView.as_view(), name='google-auth-init'),
+    path('auth/callback/', GoogleAuthCallbackView.as_view(), name='google-auth-callback'),
+    path('drive/upload/', GoogleDriveUploadView.as_view(), name='google-drive-upload'),
 ]

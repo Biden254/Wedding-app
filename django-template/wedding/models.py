@@ -48,3 +48,12 @@ class GalleryItem(models.Model):
 
     def __str__(self):
         return f"Photo {self.id}"
+
+class UploadedFile(models.Model):
+    filename = models.CharField(max_length=255)
+    drive_link = models.URLField()
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.filename
+

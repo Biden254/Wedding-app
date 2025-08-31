@@ -6,14 +6,21 @@ import GiftCarousel from "../components/GiftCarousel";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Home() {
-  const eventDate = useMemo(() => new Date("2025-10-26T08:00:00"), []);
+  const eventDate = useMemo(() => new Date("2025-10-26T10:00:00"), []);
   const [timeLeft, setTimeLeft] = useState(getRemaining(eventDate));
 
   // RSVP form state
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState(null);
+
+  // Photo upload state
+  const [file, setFile] = useState(null);
+  const [uploadedBy, setUploadedBy] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [photoMessage, setPhotoMessage] = useState("");
 
   useEffect(() => {
     const t = setInterval(() => setTimeLeft(getRemaining(eventDate)), 1000);
@@ -38,7 +45,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email }),
+        body: JSON.stringify({ name, email, phone }),
       });
 
       const data = await response.json();
@@ -50,6 +57,7 @@ export default function Home() {
         });
         setName("");
         setEmail("");
+        setPhone("");
       } else {
         setMessage({
           type: "error",
@@ -65,6 +73,37 @@ export default function Home() {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  // Handle photo upload
+  const handlePhotoSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!file || !uploadedBy) {
+      setPhotoMessage("Weka jina na picha kwanza, ndugu 😅");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("uploaded_by", uploadedBy);
+
+    try {
+      setUploading(true);
+      setPhotoMessage("");
+      await fetch(`${API_URL}/api/weddings/gallery/upload/`, {
+        method: "POST",
+        body: formData,
+      });
+      setPhotoMessage("Picha imeingia safi sana! Asante 🥳");
+      setFile(null);
+      setUploadedBy("");
+    } catch (error) {
+      console.error("Upload failed:", error);
+      setPhotoMessage("Eish! Kuna shida kidogo 😬 Jaribu tena.");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -148,6 +187,25 @@ export default function Home() {
             />
           </div>
 
+          {/* Phone number input */}
+          <div>
+            <label
+              htmlFor="phone"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
+              Nambari Ya Simu
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              placeholder="Weka number yako bana"
+              className="w-full rounded-xl border border-gray-200 p-3 text-gray-700 placeholder-gray-400 shadow-sm focus:border-weddingBlue focus:ring-2 focus:ring-weddingBlue transition sm:text-sm"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+          </div>
+
           {/* Submit button */}
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -160,7 +218,7 @@ export default function Home() {
                 : "bg-weddingBlue hover:bg-weddingDarkBlue"
             }`}
           >
-            {isSubmitting ? "⏳ Medi kiasi..." : "🚀 Register sasa!"}
+            {isSubmitting ? "Medi kiasi..." : "Register sasa!"}
           </motion.button>
         </form>
 
@@ -185,7 +243,7 @@ export default function Home() {
       >
         <h2 className="text-2xl font-semibold text-weddingBrown">Ceremony</h2>
         <p className="text-sm text-gray-600 mt-2">
-          Saturday, August 27th, 2025 — 4:00 PM
+          Sunday, October 26th, 2025 — 10:00 AM
         </p>
         <p className="text-sm text-gray-600">
           Karengata SDA, Langata Road, Nairobi, Kenya
@@ -223,13 +281,52 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Photos placeholder */}
+      {/* Photos */}
       <section
         id="photos"
         className="section rounded-2xl p-6 bg-white shadow-lg border border-gray-100"
       >
         <h2 className="text-2xl font-semibold text-weddingBrown">Photos</h2>
-        <p className="text-sm text-gray-600 mt-2">Gallery coming soon.</p>
+        <p className="text-sm text-gray-600 mt-2">
+          Upload your photos from the wedding day here! 📸
+        </p>
+        <form
+          onSubmit={handlePhotoSubmit}
+          className="mt-6 max-w-lg mx-auto space-y-4 bg-gray-50 p-6 rounded-xl shadow-inner"
+        >
+          <input
+            type="file"
+            onChange={(e) => setFile(e.target.files[0])}
+            accept="image/*"
+            className="w-full rounded-xl border border-gray-200 p-3 shadow-sm bg-white"
+            required
+          />
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            type="submit"
+            disabled={uploading}
+            className={`w-full px-5 py-2 rounded-xl font-semibold text-white shadow transition-all ${
+              uploading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-weddingBlue hover:bg-weddingDarkBlue"
+            }`}
+          >
+            {uploading ? "⏳ Inapandishwa..." : "Upload sasa!"}
+          </motion.button>
+        </form>
+
+        {photoMessage && (
+          <div
+            className={`mt-4 max-w-lg mx-auto p-4 rounded-lg text-sm font-medium shadow-md transition ${
+              photoMessage.includes("safi")
+                ? "bg-green-100 text-green-800 border border-green-200"
+                : "bg-red-100 text-red-800 border border-red-200"
+            }`}
+          >
+            {photoMessage}
+          </div>
+        )}
       </section>
     </div>
   );
