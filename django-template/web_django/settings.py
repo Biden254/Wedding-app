@@ -62,8 +62,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://wedding-app-seven-rho.vercel.app"
 ]
-ALLOWED_HOSTS = [os.environ.get("EXTERNAL_HOSTNAME", "localhost")]
+ALLOWED_HOSTS = os.environ.get("EXTERNAL_HOSTNAME", "localhost").split(",")
 
+CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_ORIGINS", "").split(",")
 
 ROOT_URLCONF = "web_django.urls"
 
