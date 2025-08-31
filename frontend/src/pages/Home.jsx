@@ -156,7 +156,7 @@ export default function Home() {
               htmlFor="name"
               className="block text-sm font-semibold text-gray-700 mb-2"
             >
-              Jina Yako
+              Your Name
             </label>
             <input
               type="text"
@@ -175,7 +175,7 @@ export default function Home() {
               htmlFor="email"
               className="block text-sm font-semibold text-gray-700 mb-2"
             >
-              Email Yako
+              Your Email
             </label>
             <input
               type="email"
@@ -194,7 +194,7 @@ export default function Home() {
               htmlFor="phone"
               className="block text-sm font-semibold text-gray-700 mb-2"
             >
-              Nambari Ya Simu
+              Your contact
             </label>
             <input
               type="tel"
@@ -219,7 +219,7 @@ export default function Home() {
                 : "bg-weddingBlue hover:bg-weddingDarkBlue"
             }`}
           >
-            {isSubmitting ? "Medi kiasi..." : "Register sasa!"}
+            {isSubmitting ? "Medi kiasi..." : "Submit"}
           </motion.button>
         </form>
 
@@ -312,7 +312,7 @@ export default function Home() {
                 : "bg-weddingBlue hover:bg-weddingDarkBlue"
             }`}
           >
-            {uploading ? "⏳ Inapandishwa..." : "Upload sasa!"}
+            {uploading ? "⏳ Inapandishwa..." : "Upload "}
           </motion.button>
         </form>
 
