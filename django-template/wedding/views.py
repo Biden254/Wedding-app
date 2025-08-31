@@ -1,21 +1,16 @@
 import os
 import requests
 from django.conf import settings
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser, FormParser
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
-
 from rest_framework import viewsets, status
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAdminUser
-from django.shortcuts import get_object_or_404
-
 from .models import Guest, Gift, Wish, GalleryItem
 from .serializers import GuestSerializer, GiftSerializer, GiftReserveSerializer, WishSerializer, GallerySerializer
 
@@ -27,11 +22,11 @@ class GuestViewSet(viewsets.ModelViewSet):
     serializer_class = GuestSerializer
 
     def get_permissions(self):
-        if self.action == 'rsvp':
+        if self.action in ['create', 'rsvp']:
             return [AllowAny()]
         return [IsAdminUser()]
 
-    @action(detail=False, methods=['POST'], url_path='rsvp', permission_classes=[AllowAny])
+    @action(detail=False, methods=['POST'], url_path='rsvp')
     def rsvp(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
