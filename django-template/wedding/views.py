@@ -26,7 +26,7 @@ class GuestViewSet(viewsets.ModelViewSet):
             return [AllowAny()]
         return [IsAdminUser()]
 
-    @action(detail=False, methods=['POST'], url_path='rsvp')
+    @action(detail=False, methods=['POST'], url_path='rsvp', permission_classes=[AllowAny])
     def rsvp(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
