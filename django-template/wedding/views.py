@@ -27,7 +27,7 @@ class GuestViewSet(viewsets.ModelViewSet):
     serializer_class = GuestSerializer
 
     def get_permissions(self):
-        if self.action in ['create', 'rsvp']:
+        if self.action == 'rsvp':
             return [AllowAny()]
         return [IsAdminUser()]
 
