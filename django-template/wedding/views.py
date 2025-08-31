@@ -31,7 +31,7 @@ class GuestViewSet(viewsets.ModelViewSet):
             return [AllowAny()]
         return [IsAdminUser()]
 
-    @action(detail=False, methods=['post'], url_path='rsvp', permission_classes=[AllowAny])
+    @action(detail=False, methods=['POST'], url_path='rsvp', permission_classes=[AllowAny])
     def rsvp(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -89,7 +89,7 @@ class GalleryViewSet(viewsets.ModelViewSet):
             return [AllowAny()]
         return [IsAdminUser()]
     
-    @action(detail=False, methods=['post'], url_path='upload', permission_classes=[AllowAny])
+    @action(detail=False, methods=['POST'], url_path='upload', permission_classes=[AllowAny])
     def upload_to_drive(self, request):
         """
         Handle image uploads and save them to Google Drive.
