@@ -20,8 +20,8 @@ guest_rsvp = GuestViewSet.as_view({'POST': 'rsvp'})
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    path('auth/init/', GoogleAuthInitView.as_view(), name='google-auth-init'),
-    path('auth/callback/', GoogleAuthCallbackView.as_view(), name='google-auth-callback'),
-    path('drive/upload/', GoogleDriveUploadView.as_view(), name='google-drive-upload'),
+    path('api/auth/init/', GoogleAuthInitView.as_view(), name='google-auth-init'),
+    path('api/auth/callback/', GoogleAuthCallbackView.as_view(), name='google-auth-callback'),
+    path('api/drive/upload/', GoogleDriveUploadView.as_view(), name='google-drive-upload'),
     path('api/rsvp/', guest_rsvp, name='guest-rsvp'),
 ]

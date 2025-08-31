@@ -112,7 +112,7 @@ export default function Home() {
       {/* Hero */}
       <section className="hero rounded-2xl p-6 bg-weddingLightBeige shadow-md">
         <img
-          src="./src/pages/banner.jpg"
+          src="./src/pages/banner.png"
           alt="Wedding banner"
           className="hero-image rounded-lg w-full h-56 object-cover shadow"
         />
@@ -142,7 +142,8 @@ export default function Home() {
           RSVP
         </h2>
         <p className="text-sm text-gray-600 mt-2 text-center">
-          Please let us know your plans by September 15th, 2025.
+          Please let us know your plans by October 15th, 2025.
+          <br />Kindly RSVP early so we can plan your seat and your plate. Soja akiamka vibaya 😆… mbona sikuoni kwa list boss 🤷‍♂
         </p>
 
         <form
@@ -273,8 +274,7 @@ export default function Home() {
       >
         <h2 className="text-2xl font-semibold text-weddingBrown">Gifts</h2>
         <p className="text-sm text-gray-600 mt-2">
-          Browse gifts below. Swipe left/right or use arrows to navigate. Reserve
-          a gift to start the reservation flow.
+          Sasa ona umetafuta gift siku tatu😬. If the options feel endless😩, remember—Carrefour vouchers always do the magic.
         </p>
         <div className="mt-4">
           <GiftCarousel />
@@ -288,7 +288,7 @@ export default function Home() {
       >
         <h2 className="text-2xl font-semibold text-weddingBrown">Photos</h2>
         <p className="text-sm text-gray-600 mt-2">
-          Upload your photos from the wedding day here! 📸
+          Share your angles with us 📸… iPhone 18 and Samsung S27 upwards only—this is a Luo wedding 
         </p>
         <form
           onSubmit={handlePhotoSubmit}
