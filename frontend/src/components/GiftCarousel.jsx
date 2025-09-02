@@ -28,7 +28,7 @@ export default function GiftCarousel() {
     setLoading(true);
     setError(null);
     try {
-      const res = await api.get("/gifts/");
+      const res = await api.get("api/gifts/");
       setGifts(res.data || []);
       setIndex(0);
     } catch (err) {
@@ -68,7 +68,7 @@ export default function GiftCarousel() {
   async function handleGuestSubmit(guestData) {
     if (!selectedGift) return;
     try {
-      const guestResp = await api.post("/guests/rsvp/", guestData);
+      const guestResp = await api.post("api/guests/rsvp/", guestData);
       const guestId =
         guestResp.data.id ??
         guestResp.data.pk ??
