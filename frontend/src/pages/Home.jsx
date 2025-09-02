@@ -2,21 +2,18 @@ import React, { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import GiftCarousel from "../components/GiftCarousel";
 
-// Get backend API URL from .env
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Home() {
   const eventDate = useMemo(() => new Date("2025-10-26T10:00:00"), []);
   const [timeLeft, setTimeLeft] = useState(getRemaining(eventDate));
 
-  // RSVP form state
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState(null);
 
-  // Photo upload state
   const [file, setFile] = useState(null);
   const [uploadedBy, setUploadedBy] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -27,13 +24,11 @@ export default function Home() {
     return () => clearInterval(t);
   }, [eventDate]);
 
-  // Google Maps link
   const venueAddress = encodeURIComponent(
     "Karangata SDA, Langata Road, Nairobi, Kenya"
   );
   const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${venueAddress}`;
 
-  // Handle RSVP submit
   const handleRSVP = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -76,7 +71,6 @@ export default function Home() {
     }
   };
 
-  // Handle photo upload
   const handlePhotoSubmit = async (e) => {
     e.preventDefault();
 
@@ -150,64 +144,32 @@ export default function Home() {
           onSubmit={handleRSVP}
           className="mt-8 max-w-lg mx-auto space-y-6 bg-gray-50 p-8 rounded-xl shadow-inner"
         >
-          {/* Name input */}
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-semibold text-gray-700 mb-2"
-            >
-              Your Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              placeholder="Andika jina hapa bro/sis 😎"
-              className="w-full rounded-xl border border-gray-200 p-3 text-gray-700 placeholder-gray-400 shadow-sm focus:border-weddingBlue focus:ring-2 focus:ring-weddingBlue transition sm:text-sm"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
+          {/* Inputs */}
+          <InputField
+            id="name"
+            label="Your Name"
+            placeholder="Andika jina hapa bro/sis 😎"
+            value={name}
+            setValue={setName}
+          />
+          <InputField
+            id="email"
+            label="Your Email"
+            placeholder="Usisahau email, ndio tukutumie details bana 📧"
+            type="email"
+            value={email}
+            setValue={setEmail}
+          />
+          <InputField
+            id="phone"
+            label="Your contact"
+            placeholder="Weka number yako bana"
+            type="tel"
+            value={phone}
+            setValue={setPhone}
+          />
 
-          {/* Email input */}
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-semibold text-gray-700 mb-2"
-            >
-              Your Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              placeholder="Usisahau email, ndio tukutumie details bana 📧"
-              className="w-full rounded-xl border border-gray-200 p-3 text-gray-700 placeholder-gray-400 shadow-sm focus:border-weddingBlue focus:ring-2 focus:ring-weddingBlue transition sm:text-sm"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          {/* Phone number input */}
-          <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-semibold text-gray-700 mb-2"
-            >
-              Your contact
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              placeholder="Weka number yako bana"
-              className="w-full rounded-xl border border-gray-200 p-3 text-gray-700 placeholder-gray-400 shadow-sm focus:border-weddingBlue focus:ring-2 focus:ring-weddingBlue transition sm:text-sm"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-            />
-          </div>
-
-          {/* Submit button */}
+          {/* Submit */}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -223,7 +185,7 @@ export default function Home() {
           </motion.button>
         </form>
 
-        {/* Funny message feedback */}
+        {/* Feedback */}
         {message && (
           <div
             className={`mt-6 max-w-lg mx-auto p-4 rounded-lg text-sm font-medium shadow-md transition ${
@@ -237,7 +199,7 @@ export default function Home() {
         )}
       </section>
 
-      {/* Ceremony / Details */}
+      {/* Ceremony */}
       <section
         id="details"
         className="section rounded-2xl p-6 bg-white shadow-lg border border-gray-100"
@@ -264,6 +226,12 @@ export default function Home() {
           >
             Registry
           </a>
+          <a
+            className="btn px-5 py-2 rounded-xl bg-pink-500 text-white hover:bg-pink-600 shadow"
+            href="#support"
+          >
+            Support ❤️
+          </a>
         </div>
       </section>
 
@@ -274,10 +242,39 @@ export default function Home() {
       >
         <h2 className="text-2xl font-semibold text-weddingBrown">Gifts</h2>
         <p className="text-sm text-gray-600 mt-2">
-          Sasa ona umetafuta gift siku tatu😬. If the options feel endless😩, remember—Carrefour vouchers always do the magic.
+          Sasa ona umetafuta gift siku tatu😬. If the options feel endless😩, remember—Carrefour vouchers always do the magic.
         </p>
         <div className="mt-4">
           <GiftCarousel />
+        </div>
+      </section>
+
+      {/* ✅ New Support Section */}
+      <section
+        id="support"
+        className="section rounded-2xl p-6 bg-white shadow-lg border border-gray-100"
+      >
+        <h2 className="text-2xl font-semibold text-weddingBrown">Support</h2>
+        <p className="text-sm text-gray-600 mt-2">
+          If you'd like to bless us as we start this journey, you can support us through:
+        </p>
+        <div className="mt-4 flex flex-col gap-3">
+          <a
+            href="https://www.carrefour.ke/"
+            target="_blank"
+            rel="noreferrer"
+            className="btn px-5 py-3 rounded-xl bg-green-500 text-white hover:bg-green-600 shadow"
+          >
+            💳 Carrefour Gift Vouchers
+          </a>
+          <a
+            href="https://mpesa.com/"
+            target="_blank"
+            rel="noreferrer"
+            className="btn px-5 py-3 rounded-xl bg-yellow-500 text-white hover:bg-yellow-600 shadow"
+          >
+            📲 Send via M-PESA
+          </a>
         </div>
       </section>
 
@@ -288,7 +285,7 @@ export default function Home() {
       >
         <h2 className="text-2xl font-semibold text-weddingBrown">Photos</h2>
         <p className="text-sm text-gray-600 mt-2">
-          Share your angles with us 📸… iPhone 18 and Samsung S27 upwards only—this is a Luo wedding 
+          Share your angles with us 📸… iPhone 18 and Samsung S27 upwards only—this is a Luo wedding 
         </p>
         <form
           onSubmit={handlePhotoSubmit}
@@ -332,7 +329,30 @@ export default function Home() {
   );
 }
 
-/* Countdown card with flip animation */
+/* Reusable Input Field Component */
+function InputField({ id, label, placeholder, type = "text", value, setValue }) {
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="block text-sm font-semibold text-gray-700 mb-2"
+      >
+        {label}
+      </label>
+      <input
+        type={type}
+        id={id}
+        placeholder={placeholder}
+        className="w-full rounded-xl border border-gray-200 p-3 text-gray-700 placeholder-gray-400 shadow-sm focus:border-weddingBlue focus:ring-2 focus:ring-weddingBlue transition sm:text-sm"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        required
+      />
+    </div>
+  );
+}
+
+/* Countdown Card */
 function CountCard({ label, value }) {
   return (
     <div className="count-card bg-[#eef6ff] rounded-xl px-5 py-4 text-center min-w-[90px] shadow-lg border border-gray-200">

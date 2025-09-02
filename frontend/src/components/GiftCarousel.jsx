@@ -22,7 +22,6 @@ export default function GiftCarousel() {
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function fetchGifts() {
@@ -137,10 +136,10 @@ export default function GiftCarousel() {
             <p className="text-sm text-gray-600 mt-1">{gift.description}</p>
           )}
           <p className="text-sm text-gray-600 mt-2">
-            {gift.price ? `$${gift.price}` : "Price N/A"}
+            {gift.price ? `KES ${gift.price}` : "Price N/A"}
           </p>
 
-          <div className="mt-4">
+          <div className="mt-4 flex flex-col gap-2">
             <button
               disabled={gift.reserved}
               onClick={() => openReserve(gift)}
@@ -150,6 +149,17 @@ export default function GiftCarousel() {
             >
               {gift.reserved ? "Reserved" : "Reserve this gift"}
             </button>
+
+            {gift.link && (
+              <a
+                href={gift.link}
+                target="_blank"
+                rel="noreferrer"
+                className="w-full py-2 text-center rounded-md bg-green-600 text-white hover:bg-green-700 transition"
+              >
+                Buy on Carrefour
+              </a>
+            )}
           </div>
         </article>
 
