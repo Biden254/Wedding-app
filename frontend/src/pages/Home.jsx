@@ -256,7 +256,7 @@ export default function Home() {
       >
         <h2 className="text-2xl font-semibold text-weddingBrown">Support</h2>
         <p className="text-sm text-gray-600 mt-2">
-          If you'd like to bless us as we start this journey, you can support us through:
+          If you'd like to bless us as we start this journey, you can support us by contacting +254 791 952226 or through:
         </p>
         <div className="mt-4 flex flex-col gap-3">
           <a
@@ -266,14 +266,6 @@ export default function Home() {
             className="btn px-5 py-3 rounded-xl bg-green-500 text-white hover:bg-green-600 shadow"
           >
             💳 Carrefour Gift Vouchers
-          </a>
-          <a
-            href="https://mpesa.com/"
-            target="_blank"
-            rel="noreferrer"
-            className="btn px-5 py-3 rounded-xl bg-yellow-500 text-white hover:bg-yellow-600 shadow"
-          >
-            📲 Send via M-PESA
           </a>
         </div>
       </section>
