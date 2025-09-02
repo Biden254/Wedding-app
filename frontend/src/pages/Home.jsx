@@ -148,14 +148,12 @@ export default function Home() {
           <InputField
             id="name"
             label="Your Name"
-            placeholder="Andika jina hapa bro/sis 😎"
             value={name}
             setValue={setName}
           />
           <InputField
             id="email"
             label="Your Email"
-            placeholder="Usisahau email, ndio tukutumie details bana 📧"
             type="email"
             value={email}
             setValue={setEmail}
@@ -163,7 +161,6 @@ export default function Home() {
           <InputField
             id="phone"
             label="Your contact"
-            placeholder="Weka number yako bana"
             type="tel"
             value={phone}
             setValue={setPhone}
@@ -220,18 +217,6 @@ export default function Home() {
           >
             View Map
           </a>
-          <a
-            className="btn px-5 py-2 rounded-xl bg-weddingBlue text-white hover:bg-weddingDarkBlue shadow"
-            href="#registry"
-          >
-            Registry
-          </a>
-          <a
-            className="btn px-5 py-2 rounded-xl bg-pink-500 text-white hover:bg-pink-600 shadow"
-            href="#support"
-          >
-            Support ❤️
-          </a>
         </div>
       </section>
 
@@ -244,20 +229,6 @@ export default function Home() {
         <p className="text-sm text-gray-600 mt-2">
           Sasa ona umetafuta gift siku tatu😬. If the options feel endless😩, remember—Carrefour vouchers always do the magic.
         </p>
-        <div className="mt-4">
-          <GiftCarousel />
-        </div>
-      </section>
-
-      {/* ✅ New Support Section */}
-      <section
-        id="support"
-        className="section rounded-2xl p-6 bg-white shadow-lg border border-gray-100"
-      >
-        <h2 className="text-2xl font-semibold text-weddingBrown">Support</h2>
-        <p className="text-sm text-gray-600 mt-2">
-          If you'd like to bless us as we start this journey, you can support us by contacting +254 791 952226 or through:
-        </p>
         <div className="mt-4 flex flex-col gap-3">
           <a
             href="https://www.carrefour.ke/"
@@ -268,6 +239,20 @@ export default function Home() {
             💳 Carrefour Gift Vouchers
           </a>
         </div>
+        <div className="mt-4">
+          <GiftCarousel />
+        </div>
+      </section>
+
+      {/* Support Section */}
+      <section
+        id="support"
+        className="section rounded-2xl p-6 bg-white shadow-lg border border-gray-100"
+      >
+        <h2 className="text-2xl font-semibold text-weddingBrown">Support</h2>
+        <p className="text-sm text-gray-600 mt-2">
+          Want to support us as we put this big day together? M-Pesa contributions are welcome on +254 791 952226 (Dennis Muchemi) or feel free to reach out for more info.
+        </p>
       </section>
 
       {/* Photos */}
