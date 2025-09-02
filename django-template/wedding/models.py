@@ -23,6 +23,7 @@ class Gift(models.Model):
     title = models.CharField(max_length=255)
     image = models.URLField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    link = models.URLField(blank=True, null=True)
     reserved = models.BooleanField(default=False)
     reserved_by = models.ForeignKey(Guest, on_delete=models.SET_NULL, null=True, blank=True, related_name="reserved_gifts")
     created_at = models.DateTimeField(auto_now_add=True)

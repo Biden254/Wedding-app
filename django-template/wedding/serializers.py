@@ -12,7 +12,7 @@ class GiftSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Gift
-        fields = ['id', 'title', 'image', 'price', 'reserved', 'reserved_by', 'created_at']
+        fields = ['id', 'title', 'image', 'price', 'link', 'reserved', 'reserved_by', 'created_at']
         read_only_fields = ['id', 'created_at']
 
 class GiftReserveSerializer(serializers.Serializer):
