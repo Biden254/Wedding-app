@@ -3,12 +3,12 @@ from .models import Guest, Gift, Wish, GalleryItem
 
 @admin.register(Guest)
 class GuestAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'rsvp_status', 'meal_preference', 'created_at')
+    list_display = ('name', 'email', 'rsvp_status', 'created_at')
     search_fields = ('name', 'email')
 
 @admin.register(Gift)
 class GiftAdmin(admin.ModelAdmin):
-    list_display = ('title', 'price', 'reserved', 'reserved_by')
+    list_display = ('title', 'reserved', 'reserved_by')
     list_filter = ('reserved',)
 
 @admin.register(Wish)

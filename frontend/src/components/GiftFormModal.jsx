@@ -6,7 +6,6 @@ export default function GiftFormModal({ gift, onClose, onSubmit }) {
     email: "",
     phone: "",
     rsvp_status: true,
-    meal_preference: "",
   });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -58,6 +57,7 @@ export default function GiftFormModal({ gift, onClose, onSubmit }) {
     setSubmitError(null);
     try {
       await onSubmit(form);
+      onClose(); 
     } catch (err) {
       console.error(err);
       setSubmitError(err?.response?.data?.detail || err?.message || "Submission failed");
@@ -124,31 +124,14 @@ export default function GiftFormModal({ gift, onClose, onSubmit }) {
               {errors.email && <div className="text-sm text-red-600 mt-1">{errors.email}</div>}
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-sm text-gray-700">Phone</label>
-                <input
-                  name="phone"
-                  value={form.phone}
-                  onChange={handleChange}
-                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm p-2"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm text-gray-700">Meal</label>
-                <select
-                  name="meal_preference"
-                  value={form.meal_preference}
-                  onChange={handleChange}
-                  className="mt-1 w-full rounded-md border-gray-200 p-2"
-                >
-                  <option value="">—</option>
-                  <option value="VEG">Veg</option>
-                  <option value="NON_VEG">Non-Veg</option>
-                  <option value="VEGAN">Vegan</option>
-                </select>
-              </div>
+            <div>
+              <label className="block text-sm text-gray-700">Phone</label>
+              <input
+                name="phone"
+                value={form.phone}
+                onChange={handleChange}
+                className="mt-1 w-full rounded-md border-gray-200 shadow-sm p-2"
+              />
             </div>
 
             <div className="flex items-center gap-3">

@@ -12,7 +12,6 @@ export default function GiftCarousel() {
 
   const touchStartX = useRef(null);
   const containerRef = useRef(null);
-  const intervalRef = useRef(null);
 
   useEffect(() => {
     fetchGifts();
@@ -22,26 +21,14 @@ export default function GiftCarousel() {
       if (e.key === "ArrowRight") next();
     }
     window.addEventListener("keydown", onKey);
-
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      clearInterval(intervalRef.current);
-    };
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
-
+  
   useEffect(() => {
-    if (gifts.length > 0) {
-      startAutoSlide();
-    }
-    return () => clearInterval(intervalRef.current);
-  }, [gifts]);
-
-  function startAutoSlide() {
-    clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
-      next();
-    }, 2000); // ✅ change gift every 2 seconds
-  }
+    if (showModal || gifts.length <= 1) return;
+    const id = setInterval(() => next(), 2000);
+    return () => clearInterval(id);
+  }, [gifts.length, showModal, index]);
 
   async function fetchGifts() {
     setLoading(true);
@@ -120,9 +107,9 @@ export default function GiftCarousel() {
       aria-roledescription="carousel"
       aria-label="Gift registry carousel"
     >
-      <div className="flex items-center justify-center gap-4">
+      <div className="w-full">
         <article
-          className="gift-card bg-weddingLightBeige rounded-xl p-4 shadow-md w-80"
+          className="gift-card bg-weddingLightBeige rounded-xl p-4 shadow-md w-full"
           role="group"
           aria-roledescription="slide"
           aria-label={`${gift.title} ${gift.reserved ? "reserved" : "available"}`}
@@ -131,7 +118,7 @@ export default function GiftCarousel() {
             <img
               src={gift.image || "/placeholder.png"}
               alt={gift.title}
-              className="w-full h-48 rounded-md object-cover"
+              className="w-full h-64 md:h-80 rounded-md object-cover"
             />
             {gift.reserved && (
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-md">
@@ -145,12 +132,10 @@ export default function GiftCarousel() {
           <h3 className="mt-3 text-lg font-semibold text-weddingBrown">
             {gift.title}
           </h3>
+
           {gift.description && (
             <p className="text-sm text-gray-600 mt-1">{gift.description}</p>
           )}
-          <p className="text-sm text-gray-600 mt-2">
-            {gift.price ? `KES ${gift.price}` : "Price N/A"}
-          </p>
 
           <div className="mt-4 flex flex-col gap-2">
             <button
