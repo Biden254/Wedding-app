@@ -12,6 +12,7 @@ export default function GiftCarousel() {
 
   const touchStartX = useRef(null);
   const containerRef = useRef(null);
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     fetchGifts();
@@ -21,8 +22,26 @@ export default function GiftCarousel() {
       if (e.key === "ArrowRight") next();
     }
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      clearInterval(intervalRef.current);
+    };
   }, []);
+
+  useEffect(() => {
+    if (gifts.length > 0) {
+      startAutoSlide();
+    }
+    return () => clearInterval(intervalRef.current);
+  }, [gifts]);
+
+  function startAutoSlide() {
+    clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      next();
+    }, 2000); // ✅ change gift every 2 seconds
+  }
 
   async function fetchGifts() {
     setLoading(true);
@@ -102,14 +121,6 @@ export default function GiftCarousel() {
       aria-label="Gift registry carousel"
     >
       <div className="flex items-center justify-center gap-4">
-        <button
-          aria-label="previous gift"
-          onClick={prev}
-          className="text-3xl text-gray-400 hover:text-weddingBlue disabled:opacity-50"
-        >
-          ‹
-        </button>
-
         <article
           className="gift-card bg-weddingLightBeige rounded-xl p-4 shadow-md w-80"
           role="group"
@@ -131,7 +142,9 @@ export default function GiftCarousel() {
             )}
           </div>
 
-          <h3 className="mt-3 text-lg font-semibold text-weddingBrown">{gift.title}</h3>
+          <h3 className="mt-3 text-lg font-semibold text-weddingBrown">
+            {gift.title}
+          </h3>
           {gift.description && (
             <p className="text-sm text-gray-600 mt-1">{gift.description}</p>
           )}
@@ -162,14 +175,6 @@ export default function GiftCarousel() {
             )}
           </div>
         </article>
-
-        <button
-          aria-label="next gift"
-          onClick={next}
-          className="text-3xl text-gray-400 hover:text-weddingBlue disabled:opacity-50"
-        >
-          ›
-        </button>
       </div>
 
       <div className="flex justify-center gap-2 mt-3">
