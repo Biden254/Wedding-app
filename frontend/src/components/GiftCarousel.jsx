@@ -118,7 +118,7 @@ export default function GiftCarousel() {
             <img
               src={gift.image || "/placeholder.png"}
               alt={gift.title}
-              className="w-full h-64 md:h-80 rounded-md object-cover"
+              className="w-full h-48 sm:h-56 md:h-64 lg:h-72 rounded-md object-cover transition-transform duration-300 ease-in-out"
             />
             {gift.reserved && (
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-md">

@@ -57,7 +57,7 @@ export default function GiftFormModal({ gift, onClose, onSubmit }) {
     setSubmitError(null);
     try {
       await onSubmit(form);
-      onClose(); 
+      onClose();
     } catch (err) {
       console.error(err);
       setSubmitError(err?.response?.data?.detail || err?.message || "Submission failed");
