@@ -26,7 +26,7 @@ export default function GiftCarousel() {
   
   useEffect(() => {
     if (showModal || gifts.length <= 1) return;
-    const id = setInterval(() => next(), 2000);
+    const id = setInterval(() => next(), 3000);
     return () => clearInterval(id);
   }, [gifts.length, showModal, index]);
 
@@ -114,14 +114,20 @@ export default function GiftCarousel() {
           aria-roledescription="slide"
           aria-label={`${gift.title} ${gift.reserved ? "reserved" : "available"}`}
         >
-          <div className="relative">
+          <div className="relative flex justify-center items-center">
             <img
               src={gift.image || "/placeholder.png"}
               alt={gift.title}
-              className="w-full h-48 sm:h-56 md:h-64 lg:h-72 rounded-md object-cover transition-transform duration-300 ease-in-out"
+              className="rounded-lg object-cover transition-transform duration-300 ease-in-out w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl"
+              style={{
+                maxHeight: "300px",
+                width: "100%",
+                aspectRatio: "4 / 3",
+                objectFit: "cover",
+              }}
             />
             {gift.reserved && (
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-md">
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-lg">
                 <span className="text-white font-semibold bg-black/40 px-3 py-1 rounded">
                   Reserved
                 </span>
@@ -129,12 +135,12 @@ export default function GiftCarousel() {
             )}
           </div>
 
-          <h3 className="mt-3 text-lg font-semibold text-weddingBrown">
+          <h3 className="mt-3 text-lg font-semibold text-weddingBrown text-center">
             {gift.title}
           </h3>
 
           {gift.description && (
-            <p className="text-sm text-gray-600 mt-1">{gift.description}</p>
+            <p className="text-sm text-gray-600 mt-1 text-center">{gift.description}</p>
           )}
 
           <div className="mt-4 flex flex-col gap-2">

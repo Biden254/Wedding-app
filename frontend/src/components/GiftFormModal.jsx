@@ -16,13 +16,16 @@ export default function GiftFormModal({ gift, onClose, onSubmit }) {
 
   useEffect(() => {
     previouslyFocused.current = document.activeElement;
-    nameRef.current?.focus();
+    setTimeout(() => nameRef.current?.focus(), 100); // ✅ Delay to prevent cursor jump bug
+
     const onKey = (e) => {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", onKey);
+
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
