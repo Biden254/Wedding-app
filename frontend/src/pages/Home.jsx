@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import GiftCarousel from "../components/GiftCarousel";
+import banner from "../pages/banner.jpg";  
 
+// Environment variable for API URL
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Home() {
@@ -106,7 +108,7 @@ export default function Home() {
       {/* Hero */}
       <section className="hero rounded-2xl p-6 bg-weddingLightBeige shadow-md">
         <img
-          src="./src/pages/banner.png"
+          src={banner}  
           alt="Wedding banner"
           className="hero-image rounded-lg w-full h-56 object-cover shadow"
         />
@@ -137,7 +139,8 @@ export default function Home() {
         </h2>
         <p className="text-sm text-gray-600 mt-2 text-center">
           Please let us know your plans by October 15th, 2025.
-          <br />Kindly RSVP early so we can plan your seat and your plate. Soja akiamka vibaya 😆… mbona sikuoni kwa list boss 🤷‍♂
+          <br />
+          Kindly RSVP early so we can plan your seat and your plate. Soja akiamka vibaya 😆… mbona sikuoni kwa list boss 🤷‍♂
         </p>
 
         <form
@@ -160,7 +163,7 @@ export default function Home() {
           />
           <InputField
             id="phone"
-            label="Your contact"
+            label="Your Contact"
             type="tel"
             value={phone}
             setValue={setPhone}
@@ -223,7 +226,7 @@ export default function Home() {
       {/* Gifts */}
       <section
         id="gifts"
-        className="gifts rounded-2xl p-6 bg-white shadow-lg border border-gray-100"
+        className="section rounded-2xl p-6 bg-white shadow-lg border border-gray-100"
       >
         <h2 className="text-2xl font-semibold text-weddingBrown">Gifts</h2>
         <p className="text-sm text-gray-600 mt-2">
